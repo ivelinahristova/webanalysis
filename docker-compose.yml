@@ -1,0 +1,16 @@
+version: "2"
+services:
+  db:
+    image: mariadb:10.5.9
+    ports:
+      - "3206:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+  app:
+    build: .
+    links:
+      - db
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
