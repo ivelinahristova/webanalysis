@@ -1,0 +1,1 @@
+from app.frontend.views import frontend

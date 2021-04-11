@@ -1,20 +1,20 @@
 from flask import Flask
 import click
 from pprint import pprint
-from flask import render_template
 import requests
 from bs4 import BeautifulSoup
 from typing import AnyStr
 import re
 from scrapers.scraper_resolver import ScraperResolver
 from proxies.proxies import Proxies
-import json
 import datetime
 from app.db import db
 from app.models import Article, Keyword
-from sqlalchemy import text
 import os
 from dotenv import load_dotenv
+from app import utils
+from app.api import api
+from app.frontend import frontend
 
 load_dotenv()
 
@@ -22,53 +22,11 @@ app = Flask(__name__)
 app.config.from_pyfile('../config.py')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_CONN")
 
+app.register_blueprint(api)
+app.register_blueprint(frontend)
+
 with app.app_context():
     db.init_app(app)
-
-
-@app.route('/')
-def media_stats():
-    return render_template('media-stats.html')
-
-@app.route('/sources')
-def sources():
-    resolver = ScraperResolver()
-    sources = resolver.get_all().keys()
-
-    response = app.response_class(
-        response=json.dumps(list(sources)),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
-
-@app.route('/keywords/', defaults={'name': None})
-@app.route('/keywords/<name>')
-def keywords(name):
-    source = False
-    if name:
-        source = clean_data(name)
-    today = datetime.date.today().isoformat()
-    # today = '2021-04-08 00:00:00' #@todo: fix
-    if source:
-        sql = text(f'select keywords.id as id, count(keywords.id) as counts, keywords.title from article_keyword \
-left join articles on article_keyword.article_id = articles.id \
-left join keywords on article_keyword.keyword_id = keywords.id where date > {today!r} and source = {source!r} group by keywords.id having counts > 1')
-        result = db.session.execute(sql)
-    else:
-        sql = text(f'select keywords.id as id, count(keywords.id) as counts, keywords.title from article_keyword \
-        left join articles on article_keyword.article_id = articles.id \
-        left join keywords on article_keyword.keyword_id = keywords.id where date > {today!r} group by keywords.id having counts > 1')
-        result = db.session.execute(sql)
-
-    all_articles = [dict(r._mapping.items()) for r in result]
-
-    response = app.response_class(
-        response=json.dumps(all_articles),
-        status=200,
-        mimetype='application/json'
-    )
-    return response
 
 
 @app.cli.command("scrape-web")
@@ -118,9 +76,9 @@ def create_article(title: AnyStr, source: AnyStr, url: AnyStr, date: datetime):
     :param cursor:
     :return:
     """
-    title = clean_data(title)
-    source = clean_data(source)
-    url = clean_data(url)
+    title = utils.clean_data(title)
+    source = utils.clean_data(source)
+    url = utils.clean_data(url)
     date = date.strftime('%Y-%m-%d %H:%M:%S')
     article = False
     query = db.session.query(Article).filter(Article.url == url)
@@ -134,7 +92,7 @@ def create_article(title: AnyStr, source: AnyStr, url: AnyStr, date: datetime):
 
 
 def create_keyword(title):
-    title = clean_data(title)
+    title = utils.clean_data(title)
     print(title)
     print('create_keyword')
     keyword = False
@@ -148,9 +106,6 @@ def create_keyword(title):
 
     return keyword
 
-
-def clean_data(text):
-    return text.replace('"', '&quot;').replace("'", '&quot;')
 
 def get_request(url, proxy_resolver):
     content = ''
