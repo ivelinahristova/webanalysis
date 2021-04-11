@@ -1,7 +1,6 @@
-from db import db
 from app import app
 import sqlalchemy
-from models import *
+from app.models import *
 import os
 
 

@@ -1,5 +1,5 @@
-from scrapers import Scraper
-from typing import AnyStr, Callable
+from scrapers.scrapers import Scraper
+from typing import AnyStr
 import datetime
 import re
 

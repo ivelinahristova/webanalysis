@@ -4,17 +4,14 @@ from pprint import pprint
 from flask import render_template
 import requests
 from bs4 import BeautifulSoup
-import json
-import mariadb
-from typing import AnyStr, Callable
+from typing import AnyStr
 import re
-from scraper_resolver import ScraperResolver
-import time
-from proxies import Proxies
+from scrapers.scraper_resolver import ScraperResolver
+from proxies.proxies import Proxies
 import json
 import datetime
-from db import db
-from models import Article, Keyword
+from app.db import db
+from app.models import Article, Keyword
 from sqlalchemy import text
 import os
 from dotenv import load_dotenv
@@ -22,7 +19,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
+app.config.from_pyfile('../config.py')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_CONN")
 
 with app.app_context():
