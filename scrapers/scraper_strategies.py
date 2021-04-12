@@ -36,6 +36,13 @@ class DnevnikStrategy(Scraper):
             return super(DnevnikStrategy, self).get_date(soup)
 
         return date
+    def get_author(self, soup):
+        span = soup.find('span', {'itemprop': 'author'})
+        if span:
+            meta = span.find('meta', {'itemprop': 'name'})
+            return meta['content'].strip()
+
+        return False
 
 class DariknewsStrategy(Scraper):
     def get_name(self) -> AnyStr:
@@ -73,6 +80,13 @@ class DariknewsStrategy(Scraper):
             return super(DariknewsStrategy, self).get_date(soup)
 
         return date
+    def get_author(self, soup):
+        div = soup.find('div', {'itemprop': 'author'})
+        if div:
+            span = div.find('span', {'itemprop': 'name'})
+            return span.text.strip()
+
+        return False
 
 class VestiStrategy(Scraper):
     def get_name(self) -> AnyStr:
@@ -110,6 +124,15 @@ class VestiStrategy(Scraper):
             return super(VestiStrategy, self).get_date(soup)
 
         return date
+    def get_author(self, soup):
+        div = soup.find('h3', {'class': 'author'})
+        if div:
+            span = div.find('span')
+            if span:
+                a = span.find('a')
+                return a.text.strip()
+
+        return False
 
 class BivolStrategy(Scraper):
     def get_name(self) -> AnyStr:
@@ -151,3 +174,10 @@ class BivolStrategy(Scraper):
             return super(BivolStrategy, self).get_date(soup)
 
         return date
+    def get_author(self, soup):
+        span = soup.find('span', {'class': 'author vcard'})
+        if span:
+            a = span.find('a')
+            return a.text.strip()
+
+        return False

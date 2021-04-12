@@ -9,7 +9,7 @@ from scrapers.scraper_resolver import ScraperResolver
 from proxies.proxies import Proxies
 import datetime
 from app.db import db
-from app.models import Article, Keyword
+from app.models import Article, Keyword, Author
 import os
 from dotenv import load_dotenv
 from app import utils
@@ -57,6 +57,13 @@ def scrape_article(url: AnyStr, source: AnyStr, scraper, proxy_resolver):
     soup = BeautifulSoup(page.content, 'html.parser')
     article_title = soup.title.text
     date = scraper.get_date(soup)
+    author = scraper.get_author(soup)
+    author_obj = False
+    if author:
+        author_obj = create_author(author, source)
+        db.session.add(author_obj)
+        db.session.commit()
+
     article = create_article(article_title, source, url, date)
     if article:
         for keyword in scraper.get_keywords(soup):
@@ -65,6 +72,10 @@ def scrape_article(url: AnyStr, source: AnyStr, scraper, proxy_resolver):
             if keyword_obj:
                 article.keywords.append(keyword_obj)
                 res = db.session.add(article)
+                db.session.commit()
+            if author_obj:
+                article.author = author_obj.id
+                db.session.add(article)
                 db.session.commit()
 
 
@@ -106,6 +117,20 @@ def create_keyword(title):
 
     return keyword
 
+def create_author(title, source):
+    title = utils.clean_data(title)
+    print(title)
+    print('create_author')
+    author = False
+    query = db.session.query(Author).filter(Author.title == title, Author.source == source)
+    if query.count() == 0:
+        author = Author(title, source)
+        db.session.add(author)
+        db.session.commit()
+    else:
+        author = query.first()
+
+    return author
 
 def get_request(url, proxy_resolver):
     content = ''

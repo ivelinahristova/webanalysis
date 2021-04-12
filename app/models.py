@@ -25,6 +25,7 @@ class Article(db.Model):
     source = db.Column(db.String(255), nullable=False)
     date = db.Column(db.DateTime, nullable=False)
     url = db.Column(db.String(255), nullable=False)
+    author = Column(Integer, ForeignKey("authors.id"))
     # keywords = db.relationship('Keyword', secondary='ArticleKeyword')
     keywords = db.relationship(
         "Keyword",
@@ -56,7 +57,23 @@ class Keyword(db.Model):
         self.title = title
 
     def __repr__(self):
-        return '<title {}'.format(self.title)
+        return 'Keyword, title {}'.format(self.title)
+
+
+class Author(db.Model):
+
+    __tablename__ = "authors"
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    source = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, title, source):
+        self.title = title
+        self.source = source
+
+    def __repr__(self):
+        return 'Author, title {}'.format(self.title)
 
 
 # class ArticleKeyword(db.Model):

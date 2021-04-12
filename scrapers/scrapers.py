@@ -10,3 +10,5 @@ class Scraper(ABC):
         pass
     def get_date(self, soup):
         return datetime.datetime.today()
+    def get_author(self, soup):
+        pass
