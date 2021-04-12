@@ -29,8 +29,6 @@ class Proxies:
         if self.__proxy_pointer == len(self.__proxies):
             return False
         proxy = 'http://' + self.__proxies[self.__proxy_pointer]
-        print(proxy)
-        print(self.__proxy_pointer)
         return proxy
 
     def next_proxy(self):

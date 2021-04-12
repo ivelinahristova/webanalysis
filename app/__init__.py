@@ -120,12 +120,12 @@ def get_request(url, proxy_resolver):
                 proxies = {"http": proxy, "https": proxy}
             content = requests.get(url, headers=headers, proxies=proxies, timeout=10)
         else:
-            pass #@todo: throw exception
-    except:
-        print('error')
+            raise Exception('Proxy was not resolved properly')
+    except Exception as e:
+        print(f'error {e}')
+        print('..next proxy..')
         proxy_resolver.next_proxy()
         return get_request(url, proxy_resolver)
 
-    pprint(content)
     return content
 
