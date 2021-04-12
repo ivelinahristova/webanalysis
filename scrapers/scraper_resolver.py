@@ -1,7 +1,7 @@
-from scrapers.scraper_strategies import DnevnikStrategy
-from scrapers.scraper_strategies import DariknewsStrategy
-from scrapers.scraper_strategies import VestiStrategy
-from scrapers.scraper_strategies import BivolStrategy
+from scrapers.scraper_strategies.bivol_strategy import BivolStrategy
+from scrapers.scraper_strategies.vesti_strategy import VestiStrategy
+from scrapers.scraper_strategies.dnevnik_strategy import DnevnikStrategy
+from scrapers.scraper_strategies.dariknews_strategy import DariknewsStrategy
 
 
 class ScraperResolver:
