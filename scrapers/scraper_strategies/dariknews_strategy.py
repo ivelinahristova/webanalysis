@@ -47,3 +47,6 @@ class DariknewsStrategy(Scraper):
             return span.text.strip()
 
         return False
+    def get_content(self, soup):
+        body = soup.find('div', {'itemprop': 'articleBody text'})
+        return body.text.strip()

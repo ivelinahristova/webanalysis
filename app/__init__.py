@@ -54,17 +54,18 @@ def scrape_article(url: AnyStr, source: AnyStr, scraper, proxy_resolver):
     :param source: AnyStr
     """
     page = get_request(url, proxy_resolver)
-    soup = BeautifulSoup(page.content, 'html.parser')
+    soup = BeautifulSoup(page.content, 'lxml')
     article_title = soup.title.text
     date = scraper.get_date(soup)
     author = scraper.get_author(soup)
+    sentence_count = scraper.get_sentences_count(soup)
     author_obj = False
     if author:
         author_obj = create_author(author, source)
         db.session.add(author_obj)
         db.session.commit()
 
-    article = create_article(article_title, source, url, date)
+    article = create_article(article_title, source, url, date, sentence_count)
     if article:
         for keyword in scraper.get_keywords(soup):
             keyword_obj = create_keyword(keyword)
@@ -79,7 +80,7 @@ def scrape_article(url: AnyStr, source: AnyStr, scraper, proxy_resolver):
                 db.session.commit()
 
 
-def create_article(title: AnyStr, source: AnyStr, url: AnyStr, date: datetime):
+def create_article(title: AnyStr, source: AnyStr, url: AnyStr, date: datetime, sentence_count: int):
     """
 
     :param title:
@@ -94,7 +95,7 @@ def create_article(title: AnyStr, source: AnyStr, url: AnyStr, date: datetime):
     article = False
     query = db.session.query(Article).filter(Article.url == url)
     if query.count() == 0:
-        article = Article(title, source, date, url)
+        article = Article(title, source, date, url, sentence_count)
         res = db.session.add(article)
         db.session.commit()
 

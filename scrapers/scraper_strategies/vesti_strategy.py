@@ -49,3 +49,6 @@ class VestiStrategy(Scraper):
                 return a.text.strip()
 
         return False
+    def get_content(self, soup):
+        body = soup.find('div', {'itemprop': 'articleBody'})
+        return body.text.strip()

@@ -26,6 +26,7 @@ class Article(db.Model):
     date = db.Column(db.DateTime, nullable=False)
     url = db.Column(db.String(255), nullable=False)
     author = Column(Integer, ForeignKey("authors.id"))
+    sentences_count = db.Column(db.Integer)
     # keywords = db.relationship('Keyword', secondary='ArticleKeyword')
     keywords = db.relationship(
         "Keyword",
@@ -35,12 +36,12 @@ class Article(db.Model):
         lazy="dynamic"
     )
 
-    def __init__(self, title, source, date, url):
+    def __init__(self, title, source, date, url, sentences_count):
         self.title = title
         self.source = source
         self.date = date
         self.url = url
-
+        self.sentences_count = sentences_count
     def __repr__(self):
         return '<title {}'.format(self.title)
 

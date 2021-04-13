@@ -44,3 +44,16 @@ class DnevnikStrategy(Scraper):
             return meta['content'].strip()
 
         return False
+    def get_content(self, soup):
+        body = soup.find('div', {'itemprop': 'articleBody'})
+        if body:
+            return body.text.strip()
+        else:
+            article = soup.find('article', {'id': 'live-story'})
+            if article:
+                return article.text.strip()
+            else:
+                article = soup.find('div', {'class': 'article-content'})
+                if article:
+                    return article.text.strip()
+        return False
