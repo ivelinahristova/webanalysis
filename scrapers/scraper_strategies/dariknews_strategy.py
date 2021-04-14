@@ -49,4 +49,7 @@ class DariknewsStrategy(Scraper):
         return False
     def get_content(self, soup):
         body = soup.find('div', {'itemprop': 'articleBody text'})
+        div = body.find('div', {'class': 'on-topic'})
+        if div:
+            div.decompose()
         return body.text.strip()
