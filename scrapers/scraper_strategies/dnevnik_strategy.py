@@ -13,7 +13,7 @@ class DnevnikStrategy(Scraper):
         return URL
     def list_articles(self, soup):
         content = soup.findAll('div', {'class': 'grid-container'})
-        articles = soup.findAll("article")
+        articles = soup.findAll('article')
         for article in articles:
             header = article.div.h2
             if header is not None:
@@ -21,7 +21,7 @@ class DnevnikStrategy(Scraper):
                 print(link)
                 yield link
     def get_keywords(self, soup):
-        keywords = soup.findAll("li", {"itemprop": "keywords"})
+        keywords = soup.findAll('li', {'itemprop': 'keywords'})
         for keyword in keywords:
             yield keyword.text.strip()
     def get_date(self, soup):

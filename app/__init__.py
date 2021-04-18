@@ -22,7 +22,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config.from_pyfile('../config.py')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_CONN")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_CONN')
 
 app.register_blueprint(api)
 app.register_blueprint(frontend)
@@ -31,8 +31,8 @@ with app.app_context():
     db.init_app(app)
 
 
-@app.cli.command("scrape-web")
-@click.argument("name")
+@app.cli.command('scrape-web')
+@click.argument('name')
 def scrape(name: AnyStr):
     with app.app_context():
         resolver = ScraperResolver()
@@ -44,7 +44,7 @@ def scrape(name: AnyStr):
         page = get_request(url, proxy_resolver)
         soup = BeautifulSoup(page.content, 'html.parser')
         for link in scraper.list_articles(soup):
-            if re.search("^https", link):
+            if re.search('^https', link):
                 scrape_article(link, source, scraper, proxy_resolver)
 
 
@@ -147,7 +147,7 @@ def get_request(url, proxy_resolver):
 
             proxies = {}
             if app.config['USE_PROXY']:
-                proxies = {"http": proxy, "https": proxy}
+                proxies = {'http': proxy, 'https': proxy}
             content = requests.get(url, headers=headers,
                                    proxies=proxies, timeout=10)
         else:

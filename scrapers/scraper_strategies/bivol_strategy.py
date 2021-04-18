@@ -23,7 +23,7 @@ class BivolStrategy(Scraper):
                 yield link
 
     def get_keywords(self, soup):
-        keywords = soup.findAll("a", {"rel": "tag"})
+        keywords = soup.findAll('a', {'rel': 'tag'})
         for keyword in keywords:
             yield keyword.text.strip()
     def get_date(self, soup):

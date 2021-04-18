@@ -8,17 +8,17 @@ Base = declarative_base()
 articles_keywords = db.Table(
     'article_keyword',
     db.Column('article_id', db.Integer,
-              db.ForeignKey('articles.id', ondelete="CASCADE"),
+              db.ForeignKey('articles.id', ondelete='CASCADE'),
               nullable=False),
     db.Column('keyword_id', db.Integer,
-              db.ForeignKey('keywords.id', ondelete="CASCADE"),
+              db.ForeignKey('keywords.id', ondelete='CASCADE'),
               nullable=False)
 )
 
 
 class Article(db.Model):
 
-    __tablename__ = "articles"
+    __tablename__ = 'articles'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
@@ -29,11 +29,11 @@ class Article(db.Model):
     sentences_count = db.Column(db.Integer)
     # keywords = db.relationship('Keyword', secondary='ArticleKeyword')
     keywords = db.relationship(
-        "Keyword",
+        'Keyword',
         secondary=articles_keywords,
         primaryjoin=(articles_keywords.c.article_id == id),
-        backref=db.backref("articles", lazy="dynamic"),
-        lazy="dynamic"
+        backref=db.backref('articles', lazy='dynamic'),
+        lazy='dynamic'
     )
 
     def __init__(self, title, source, date, url, sentences_count):
@@ -48,7 +48,7 @@ class Article(db.Model):
 
 class Keyword(db.Model):
 
-    __tablename__ = "keywords"
+    __tablename__ = 'keywords'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
@@ -63,7 +63,7 @@ class Keyword(db.Model):
 
 class Author(db.Model):
 
-    __tablename__ = "authors"
+    __tablename__ = 'authors'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)

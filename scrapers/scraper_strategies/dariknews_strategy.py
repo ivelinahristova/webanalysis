@@ -21,7 +21,7 @@ class DariknewsStrategy(Scraper):
                 print(link)
                 yield link
     def get_keywords(self, soup):
-        keywords = soup.findAll("a", {"class": "gtm-Tags-click"})
+        keywords = soup.findAll('a', {'class': 'gtm-Tags-click'})
         for keyword in keywords:
             yield keyword.text.strip()
     def get_date(self, soup):

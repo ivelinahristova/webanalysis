@@ -24,7 +24,7 @@ class VestiStrategy(Scraper):
                 yield link
 
     def get_keywords(self, soup):
-        keywords = soup.findAll("a", {"itemprop": "keywords"})
+        keywords = soup.findAll('a', {'itemprop': 'keywords'})
         for keyword in keywords:
             yield keyword.text.strip()
 

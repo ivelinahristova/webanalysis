@@ -23,7 +23,7 @@ class Proxies:
     def get_proxies(self):
         response = requests.get('https://free-proxy-list.net/')
         if response.status_code == requests.codes.ok:
-            page_soup = BeautifulSoup(response.text, "html.parser")
+            page_soup = BeautifulSoup(response.text, 'html.parser')
             textarea = page_soup.find('textarea').text
             proxies = re.findall('\d+\.\d+\.\d+\.\d+\:\d+', textarea)
             return proxies
