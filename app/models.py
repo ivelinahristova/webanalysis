@@ -27,7 +27,6 @@ class Article(db.Model):
     url = db.Column(db.String(255), nullable=False)
     author = Column(Integer, ForeignKey("authors.id"))
     sentences_count = db.Column(db.Integer)
-    # keywords = db.relationship('Keyword', secondary='ArticleKeyword')
     keywords = db.relationship(
         'Keyword',
         secondary=articles_keywords,
@@ -42,6 +41,7 @@ class Article(db.Model):
         self.date = date
         self.url = url
         self.sentences_count = sentences_count
+
     def __repr__(self):
         return '<title {}'.format(self.title)
 
@@ -52,7 +52,6 @@ class Keyword(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
-    # articles = db.relationship(Article, secondary='ArticleKeyword')
 
     def __init__(self, title):
         self.title = title
@@ -75,18 +74,3 @@ class Author(db.Model):
 
     def __repr__(self):
         return 'Author, title {}'.format(self.title)
-
-
-# class ArticleKeyword(db.Model):
-#
-#     __tablename__ = 'article_keyword'
-#
-#     article_id = db.Column(
-#       Integer,
-#       ForeignKey('articles.id'),
-#       primary_key=True)
-#
-#     keyword_id = db.Column(
-#        Integer,
-#        ForeignKey('keywords.id'),
-#        primary_key=True)

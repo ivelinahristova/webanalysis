@@ -42,6 +42,7 @@ class VestiStrategy(Scraper):
             return super(VestiStrategy, self).get_date(soup)
 
         return date
+
     def get_author(self, soup):
         div = soup.find('h3', {'class': 'author'})
         if div:
@@ -51,6 +52,7 @@ class VestiStrategy(Scraper):
                 return a.text.strip()
 
         return False
+
     def get_content(self, soup):
         body = soup.find('div', {'itemprop': 'articleBody'})
         return body.text.strip()

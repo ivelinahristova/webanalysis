@@ -9,6 +9,7 @@ from scrapers.scraper_resolver import ScraperResolver
 
 api = Blueprint('api', __name__)
 
+
 @api.route('/sources')
 def sources():
     resolver = ScraperResolver()
@@ -16,6 +17,7 @@ def sources():
 
     response = Response(json.dumps(list(sources)), mimetype='application/json')
     return response
+
 
 @api.route('/keywords/', defaults={'name': None})
 @api.route('/keywords/<name>')

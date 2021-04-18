@@ -105,7 +105,6 @@ def create_article(title: AnyStr, source: AnyStr, url: AnyStr,
     return article
 
 
-
 def create_keyword(title):
     title = utils.clean_data(title)
     print(title)
@@ -120,6 +119,7 @@ def create_keyword(title):
         keyword = query.first()
 
     return keyword
+
 
 def create_author(title, source):
     title = utils.clean_data(title)
@@ -136,6 +136,7 @@ def create_author(title, source):
         author = query.first()
 
     return author
+
 
 def get_request(url, proxy_resolver):
     content = ''

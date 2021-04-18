@@ -1,4 +1,3 @@
-# content of test_proxy.py
 import re
 
 from proxies.proxies import Proxies

@@ -8,9 +8,11 @@ from scrapers.scrapers import Scraper
 class DariknewsStrategy(Scraper):
     def get_name(self) -> AnyStr:
         return 'dariknews'
+
     def get_list_url(self):
         URL = 'https://dariknews.bg/novini'
         return URL
+
     def list_articles(self, soup):
         articles = soup.findAll('article', {'itemprop': 'itemListElement'})
         for article in articles:
@@ -20,10 +22,12 @@ class DariknewsStrategy(Scraper):
                 link = link.replace('//', 'https://')
                 print(link)
                 yield link
+
     def get_keywords(self, soup):
         keywords = soup.findAll('a', {'class': 'gtm-Tags-click'})
         for keyword in keywords:
             yield keyword.text.strip()
+
     def get_date(self, soup):
         tag = soup.find('time', {'itemprop': 'datePublished'})
         if tag:
@@ -45,6 +49,7 @@ class DariknewsStrategy(Scraper):
             return super(DariknewsStrategy, self).get_date(soup)
 
         return date
+
     def get_author(self, soup):
         div = soup.find('div', {'itemprop': 'author'})
         if div:
@@ -52,6 +57,7 @@ class DariknewsStrategy(Scraper):
             return span.text.strip()
 
         return False
+
     def get_content(self, soup):
         body = soup.find('div', {'itemprop': 'articleBody text'})
         div = body.find('div', {'class': 'on-topic'})

@@ -26,6 +26,7 @@ class BivolStrategy(Scraper):
         keywords = soup.findAll('a', {'rel': 'tag'})
         for keyword in keywords:
             yield keyword.text.strip()
+
     def get_date(self, soup):
         meta = soup.find('meta', {'property': 'article:published_time'})
         if meta:
@@ -50,6 +51,7 @@ class BivolStrategy(Scraper):
             return super(BivolStrategy, self).get_date(soup)
 
         return date
+
     def get_author(self, soup):
         span = soup.find('span', {'class': 'author vcard'})
         if span:
@@ -57,6 +59,7 @@ class BivolStrategy(Scraper):
             return a.text.strip()
 
         return False
+
     def get_content(self, soup):
         body = soup.find('div', {'itemprop': 'articleBody'})
         return body.text.strip()

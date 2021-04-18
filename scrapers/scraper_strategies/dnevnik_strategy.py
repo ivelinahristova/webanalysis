@@ -8,9 +8,11 @@ from scrapers.scrapers import Scraper
 class DnevnikStrategy(Scraper):
     def get_name(self) -> AnyStr:
         return 'dnevnik'
+
     def get_list_url(self):
         URL = 'https://www.dnevnik.bg/allnews/today/'
         return URL
+
     def list_articles(self, soup):
         content = soup.findAll('div', {'class': 'grid-container'})
         articles = soup.findAll('article')
@@ -20,10 +22,12 @@ class DnevnikStrategy(Scraper):
                 link = header.a.get('href')
                 print(link)
                 yield link
+
     def get_keywords(self, soup):
         keywords = soup.findAll('li', {'itemprop': 'keywords'})
         for keyword in keywords:
             yield keyword.text.strip()
+
     def get_date(self, soup):
         meta = soup.find('meta', {'property': 'article:published_time'})
         if meta:
@@ -38,6 +42,7 @@ class DnevnikStrategy(Scraper):
             return super(DnevnikStrategy, self).get_date(soup)
 
         return date
+
     def get_author(self, soup):
         span = soup.find('span', {'itemprop': 'author'})
         if span:
@@ -45,6 +50,7 @@ class DnevnikStrategy(Scraper):
             return meta['content'].strip()
 
         return False
+
     def get_content(self, soup):
         body = soup.find('div', {'itemprop': 'articleBody'})
         if body:
