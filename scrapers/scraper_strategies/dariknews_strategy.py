@@ -27,7 +27,11 @@ class DariknewsStrategy(Scraper):
         tag = soup.find('time', {'itemprop': 'datePublished'})
         if tag:
             date = tag['datetime']
-            res = re.match(r"^(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})\s+(?P<H>\d{2}):(?P<M>\d{2}):(?P<S>\d{2})", date)
+            regex = r"""
+            ^(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})\s+
+            (?P<H>\d{2}):(?P<M>\d{2}):(?P<S>\d{2})
+            """
+            res = re.match(regex, date, re.VERBOSE)
             y = int(res.group('y'))
             m = int(res.group('m'))
             d = int(res.group('d'))

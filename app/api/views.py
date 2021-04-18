@@ -27,14 +27,20 @@ def keywords(name):
     today = datetime.date.today().isoformat()
     # today = '2021-04-08 00:00:00' #@todo: fix
     if source:
-        sql = text(f'select keywords.id as id, count(keywords.id) as counts, keywords.title from article_keyword \
-left join articles on article_keyword.article_id = articles.id \
-left join keywords on article_keyword.keyword_id = keywords.id where date > {today!r} and source = {source!r} group by keywords.id having counts > 1')
+        sql = text(f'select keywords.id as id, count(keywords.id) as counts, \
+                    keywords.title from article_keyword as ak \
+                    left join articles on ak.article_id = articles.id \
+                    left join keywords on ak.keyword_id = keywords.id \
+                    where date > {today!r} and source = {source!r} \
+                    group by keywords.id having counts > 1')
         result = db.session.execute(sql)
     else:
-        sql = text(f'select keywords.id as id, count(keywords.id) as counts, keywords.title from article_keyword \
-        left join articles on article_keyword.article_id = articles.id \
-        left join keywords on article_keyword.keyword_id = keywords.id where date > {today!r} group by keywords.id having counts > 1')
+        sql = text(f'select keywords.id as id, count(keywords.id) as counts, \
+                    keywords.title from article_keyword as ak \
+                    left join articles on ak.article_id = articles.id \
+                    left join keywords on ak.keyword_id = keywords.id \
+                    where date > {today!r} \
+                    group by keywords.id having counts > 1')
         result = db.session.execute(sql)
 
     all_articles = [dict(r._mapping.items()) for r in result]

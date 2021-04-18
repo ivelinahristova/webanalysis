@@ -28,10 +28,15 @@ class BivolStrategy(Scraper):
     def get_date(self, soup):
         meta = soup.find('meta', {'property': 'article:published_time'})
         if meta:
-            date = soup.find('meta', {'property': 'article:published_time'})['content']
+            date = soup.find('meta',
+                             {'property': 'article:published_time'})['content']
             date = date[0:-6]
             date = date.replace('T', ' ')
-            res = re.match(r"^(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})\s+(?P<H>\d{2}):(?P<M>\d{2}):(?P<S>\d{2})", date)
+            regex = r"""
+            ^(?P<y>\d{4})-(?P<m>\d{2})-(?P<d>\d{2})\s+
+            (?P<H>\d{2}):(?P<M>\d{2}):(?P<S>\d{2})
+            """
+            res = re.match(regex, date, re.VERBOSE)
             y = int(res.group('y'))
             m = int(res.group('m'))
             d = int(res.group('d'))

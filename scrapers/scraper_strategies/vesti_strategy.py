@@ -15,7 +15,8 @@ class VestiStrategy(Scraper):
     def list_articles(self, soup):
         articles = soup.findAll('div', {'class': 'list-item list-item-category'})
         for article in articles:
-            header = article.figure.find('div', {'class': 'text-holder'}).figcaption.h2
+            header = article.figure.find('div', {'class': 'text-holder'})\
+                .figcaption.h2
             if header is not None:
                 link = header.a.get('href')
                 print(link)

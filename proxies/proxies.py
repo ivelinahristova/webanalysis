@@ -10,9 +10,12 @@ class Proxies:
         self.__proxies = self.get_proxies()
 
         self.__user_agents = [
-            'Mozilla/5.0 CK={} (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko',
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
-            'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'
+            'Mozilla/5.0 CK={} (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) \
+            like Gecko',
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \
+            (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36',
+            'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 \
+            (KHTML, like Gecko) Chrome/72.0.3626.121 Safari/537.36'
         ]
 
     def get_proxies(self):
@@ -35,4 +38,6 @@ class Proxies:
         self.__proxy_pointer = self.__proxy_pointer + 1
 
     def get_user_agent(self):
-        return self.__user_agents[random.randint(0, (len(self.__user_agents) - 1))]
+        return self.__user_agents[
+            random.randint(0, (len(self.__user_agents) - 1))
+        ]

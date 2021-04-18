@@ -80,7 +80,8 @@ def scrape_article(url: AnyStr, source: AnyStr, scraper, proxy_resolver):
                 db.session.commit()
 
 
-def create_article(title: AnyStr, source: AnyStr, url: AnyStr, date: datetime, sentence_count: int):
+def create_article(title: AnyStr, source: AnyStr, url: AnyStr,
+                   date: datetime, sentence_count: int):
     """
 
     :param title:
@@ -123,7 +124,8 @@ def create_author(title, source):
     print(title)
     print('create_author')
     author = False
-    query = db.session.query(Author).filter(Author.title == title, Author.source == source)
+    query = db.session.query(Author).filter(Author.title == title,
+                                            Author.source == source)
     if query.count() == 0:
         author = Author(title, source)
         db.session.add(author)
@@ -144,7 +146,8 @@ def get_request(url, proxy_resolver):
             proxies = {}
             if app.config['USE_PROXY']:
                 proxies = {"http": proxy, "https": proxy}
-            content = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+            content = requests.get(url, headers=headers,
+                                   proxies=proxies, timeout=10)
         else:
             raise Exception('Proxy was not resolved properly')
     except Exception as e:
