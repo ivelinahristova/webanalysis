@@ -1,7 +1,8 @@
 # content of test_proxy.py
-from proxies.proxies import Proxies
 import re
-import sys
+
+from proxies.proxies import Proxies
+
 
 class TestProxies:
 

@@ -1,7 +1,7 @@
-from abc import ABC
-import re
 import datetime
-import sys
+import re
+from abc import ABC
+
 
 class Scraper(ABC):
     def get_name(self):

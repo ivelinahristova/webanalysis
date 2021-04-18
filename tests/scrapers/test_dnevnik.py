@@ -1,7 +1,10 @@
-from scrapers.scraper_strategies.dnevnik_strategy import DnevnikStrategy
-from bs4 import BeautifulSoup
-import os
 import datetime
+import os
+
+from bs4 import BeautifulSoup
+
+from scrapers.scraper_strategies.dnevnik_strategy import DnevnikStrategy
+
 
 class TestDnevnikScraper:
     file = 'data/asset_d.html'

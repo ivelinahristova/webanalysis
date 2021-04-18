@@ -1,6 +1,9 @@
-from scrapers.scraper_strategies.dariknews_strategy import DariknewsStrategy
-from bs4 import BeautifulSoup
 import os
+
+from bs4 import BeautifulSoup
+
+from scrapers.scraper_strategies.dariknews_strategy import DariknewsStrategy
+
 
 class TestDarikScraper:
     file = 'data/asset_dn.html'

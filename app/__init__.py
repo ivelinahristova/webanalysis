@@ -1,20 +1,22 @@
-from flask import Flask
-import click
+import datetime
+import os
+import re
 from pprint import pprint
+from typing import AnyStr
+
+import click
 import requests
 from bs4 import BeautifulSoup
-from typing import AnyStr
-import re
-from scrapers.scraper_resolver import ScraperResolver
-from proxies.proxies import Proxies
-import datetime
-from app.db import db
-from app.models import Article, Keyword, Author
-import os
 from dotenv import load_dotenv
+from flask import Flask
+
 from app import utils
 from app.api import api
+from app.db import db
 from app.frontend import frontend
+from app.models import Article, Keyword, Author
+from proxies.proxies import Proxies
+from scrapers.scraper_resolver import ScraperResolver
 
 load_dotenv()
 

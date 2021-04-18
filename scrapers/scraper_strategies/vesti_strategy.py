@@ -1,7 +1,8 @@
-from scrapers.scrapers import Scraper
-from typing import AnyStr
 import datetime
 import re
+from typing import AnyStr
+
+from scrapers.scrapers import Scraper
 
 
 class VestiStrategy(Scraper):

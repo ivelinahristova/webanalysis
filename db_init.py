@@ -1,8 +1,9 @@
-from app import app
-import sqlalchemy
-from app.models import *
 import os
 
+import sqlalchemy
+
+from app import app
+from app.models import *
 
 with app.app_context():
     db.init_app(app)

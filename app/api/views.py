@@ -1,12 +1,11 @@
-from flask import (
-    Blueprint,
-    Response
-)
-from app import utils, db
 import datetime
-from scrapers.scraper_resolver import ScraperResolver
 import json
+
+from flask import Blueprint, Response
 from sqlalchemy import text
+
+from app import utils, db
+from scrapers.scraper_resolver import ScraperResolver
 
 api = Blueprint('api', __name__)
 

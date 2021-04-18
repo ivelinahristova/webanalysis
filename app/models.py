@@ -1,7 +1,7 @@
-from app.db import db
-from sqlalchemy import Table, Column, Integer, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+
+from app.db import db
 
 Base = declarative_base()
 
