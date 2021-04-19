@@ -28,6 +28,7 @@ class Article(db.Model):
     url = db.Column(db.String(255), nullable=False)
     author = Column(Integer, ForeignKey("authors.id"))
     sentences_count = db.Column(db.Integer)
+    shares_count = db.Column(db.Integer)
     keywords = db.relationship(
         'Keyword',
         secondary=articles_keywords,
