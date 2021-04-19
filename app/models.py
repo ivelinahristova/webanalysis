@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from typing import Text
 
 from app.db import db
 
@@ -35,14 +36,14 @@ class Article(db.Model):
         lazy='dynamic'
     )
 
-    def __init__(self, title, source, date, url, sentences_count):
+    def __init__(self, title, source, date, url, sentences_count) -> None:
         self.title = title
         self.source = source
         self.date = date
         self.url = url
         self.sentences_count = sentences_count
 
-    def __repr__(self):
+    def __repr__(self) -> Text:
         return '<title {}'.format(self.title)
 
 
@@ -53,10 +54,10 @@ class Keyword(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, title):
+    def __init__(self, title) -> None:
         self.title = title
 
-    def __repr__(self):
+    def __repr__(self) -> Text:
         return 'Keyword, title {}'.format(self.title)
 
 
@@ -68,9 +69,9 @@ class Author(db.Model):
     title = db.Column(db.String(255), nullable=False)
     source = db.Column(db.String(255), nullable=False)
 
-    def __init__(self, title, source):
+    def __init__(self, title, source) -> None:
         self.title = title
         self.source = source
 
-    def __repr__(self):
+    def __repr__(self) -> Text:
         return 'Author, title {}'.format(self.title)

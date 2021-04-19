@@ -1,19 +1,19 @@
 import datetime
 import re
-from typing import AnyStr
+from typing import Text, Generator
 
 from scrapers.scrapers import Scraper
 
 
 class BivolStrategy(Scraper):
-    def get_name(self) -> AnyStr:
+    def get_name(self) -> Text:
         return 'bivol'
 
-    def get_list_url(self):
+    def get_list_url(self) -> Text:
         URL = 'https://bivol.bg/'
         return URL
 
-    def list_articles(self, soup):
+    def list_articles(self, soup) -> Generator[Text, None, None]:
         articles = soup.findAll('article')
         for article in articles:
             a = article.find('a')
@@ -22,7 +22,7 @@ class BivolStrategy(Scraper):
                 print(link)
                 yield link
 
-    def get_keywords(self, soup):
+    def get_keywords(self, soup) -> Generator[Text, None, None]:
         keywords = soup.findAll('a', {'rel': 'tag'})
         for keyword in keywords:
             yield keyword.text.strip()
@@ -52,7 +52,7 @@ class BivolStrategy(Scraper):
 
         return date
 
-    def get_author(self, soup):
+    def get_author(self, soup) -> Text:
         span = soup.find('span', {'class': 'author vcard'})
         if span:
             a = span.find('a')
@@ -60,6 +60,6 @@ class BivolStrategy(Scraper):
 
         return False
 
-    def get_content(self, soup):
+    def get_content(self, soup) -> Text:
         body = soup.find('div', {'itemprop': 'articleBody'})
         return body.text.strip()

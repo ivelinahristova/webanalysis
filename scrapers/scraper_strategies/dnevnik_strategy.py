@@ -1,19 +1,19 @@
 import datetime
 import re
-from typing import AnyStr
+from typing import Generator, Text
 
 from scrapers.scrapers import Scraper
 
 
 class DnevnikStrategy(Scraper):
-    def get_name(self) -> AnyStr:
+    def get_name(self) -> Text:
         return 'dnevnik'
 
-    def get_list_url(self):
+    def get_list_url(self) -> Text:
         URL = 'https://www.dnevnik.bg/allnews/today/'
         return URL
 
-    def list_articles(self, soup):
+    def list_articles(self, soup) -> Generator[Text, None, None]:
         content = soup.findAll('div', {'class': 'grid-container'})
         articles = soup.findAll('article')
         for article in articles:
@@ -23,7 +23,7 @@ class DnevnikStrategy(Scraper):
                 print(link)
                 yield link
 
-    def get_keywords(self, soup):
+    def get_keywords(self, soup) -> Generator[Text, None, None]:
         keywords = soup.findAll('li', {'itemprop': 'keywords'})
         for keyword in keywords:
             yield keyword.text.strip()

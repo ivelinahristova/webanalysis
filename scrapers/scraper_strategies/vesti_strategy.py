@@ -1,19 +1,19 @@
 import datetime
 import re
-from typing import AnyStr
+from typing import Generator, Text
 
 from scrapers.scrapers import Scraper
 
 
 class VestiStrategy(Scraper):
-    def get_name(self) -> AnyStr:
+    def get_name(self) -> Text:
         return 'vesti'
 
-    def get_list_url(self):
+    def get_list_url(self) -> Text:
         URL = 'https://www.vesti.bg/posledni-novini'
         return URL
 
-    def list_articles(self, soup):
+    def list_articles(self, soup) -> Generator[Text, None, None]:
         articles = soup.findAll('div', {'class': 'list-item list-item-category'})
         for article in articles:
             header = article.figure.find('div', {'class': 'text-holder'})\
@@ -23,7 +23,7 @@ class VestiStrategy(Scraper):
                 print(link)
                 yield link
 
-    def get_keywords(self, soup):
+    def get_keywords(self, soup) -> Generator[Text, None, None]:
         keywords = soup.findAll('a', {'itemprop': 'keywords'})
         for keyword in keywords:
             yield keyword.text.strip()
@@ -53,6 +53,6 @@ class VestiStrategy(Scraper):
 
         return False
 
-    def get_content(self, soup):
+    def get_content(self, soup) -> Text:
         body = soup.find('div', {'itemprop': 'articleBody'})
         return body.text.strip()

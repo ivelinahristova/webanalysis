@@ -3,15 +3,17 @@ import json
 
 from flask import Blueprint, Response
 from sqlalchemy import text
+from typing import Text
 
-from app import utils, db
+from app import utils
+from app.db import db
 from scrapers.scraper_resolver import ScraperResolver
 
 api = Blueprint('api', __name__)
 
 
 @api.route('/sources')
-def sources():
+def sources() -> Response:
     resolver = ScraperResolver()
     sources = resolver.get_all().keys()
 
@@ -21,7 +23,7 @@ def sources():
 
 @api.route('/keywords/', defaults={'name': None})
 @api.route('/keywords/<name>')
-def keywords(name):
+def keywords(name: Text) -> Response:
     source = False
     if name:
         source = utils.clean_data(name)
