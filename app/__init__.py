@@ -1,3 +1,10 @@
+"""
+    webanalysis
+    ~~~~~~~~~~~~~~~~~~
+    webanalysis is a project to extract and analyse web-related data.
+    It delivers human-readable conclusions via API.
+"""
+
 import datetime
 import os
 import re
