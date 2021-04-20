@@ -77,7 +77,7 @@ def plot_shares(source, month='2021-03'):
 
 @app.cli.command('fetch-shares')
 def fetch_db_shares() -> None:
-    query = db.session.query(Article).filter(Article.shares_count is None)
+    query = db.session.query(Article).filter(Article.shares_count == None)
     for article in query.limit(100).all():
         url = article.url
         shares_count = get_fb_shares(url)

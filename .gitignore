@@ -2,5 +2,5 @@
 .git
 __pycache__
 .env
-export/*
-!export/.gitkeep
+app/static/export/*
+!app/static/export/.gitkeep

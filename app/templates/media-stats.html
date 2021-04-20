@@ -1,14 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-</head>
-<body>
+{% extends 'base.html' %}
+{% block title %}Статистика на медийното пространство{% endblock %}
+{% block header %}
 <h2>Ключовите думи в последните 30 дни</h2>
+{% endblock %}
+
+{% block content %}
 <select id="sources"></select>
 <div id="chart"></div>
 
 <script src="{{ url_for('static', filename='d3.v4.min.js') }}"></script>
 <script src="{{ url_for('static', filename='keywords.js') }}"></script>
-</body>
-</html>
+<script src="{{ url_for('static', filename='social.js') }}"></script>
+
+<h2>Среден брой споделяния / ден през последния месец</h2>
+<div id="social_charts" data-url="{{charts_url}}"></div>
+
+{% endblock %}
+
