@@ -27,14 +27,15 @@ def keywords(name: Text) -> Response:
     source = False
     if name:
         source = utils.clean_data(name)
-    today = datetime.date.today().isoformat()
+    month_ago = (datetime.date.today() - datetime.timedelta(days=30)).isoformat()
     # today = '2021-04-08 00:00:00' #@todo: fix
+
     if source:
         sql = text(f'select keywords.id as id, count(keywords.id) as counts, \
                     keywords.title from article_keyword as ak \
                     left join articles on ak.article_id = articles.id \
                     left join keywords on ak.keyword_id = keywords.id \
-                    where date > {today!r} and source = {source!r} \
+                    where date > {month_ago!r} and source = {source!r} \
                     group by keywords.id having counts > 1')
         result = db.session.execute(sql)
     else:
@@ -42,7 +43,7 @@ def keywords(name: Text) -> Response:
                     keywords.title from article_keyword as ak \
                     left join articles on ak.article_id = articles.id \
                     left join keywords on ak.keyword_id = keywords.id \
-                    where date > {today!r} \
+                    where date > {month_ago!r} \
                     group by keywords.id having counts > 1')
         result = db.session.execute(sql)
 
