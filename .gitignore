@@ -4,3 +4,4 @@ __pycache__
 .env
 app/static/export/*
 !app/static/export/.gitkeep
+deployment/secrets.yaml
