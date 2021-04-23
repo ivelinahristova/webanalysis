@@ -6,6 +6,8 @@ services:
       - "3206:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - "vol_db:/var/lib/mysql"
   app:
     build: .
     links:
@@ -14,3 +16,6 @@ services:
       - "5000:5000"
     volumes:
       - .:/app
+
+volumes:
+  vol_db: {}
