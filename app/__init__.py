@@ -8,10 +8,8 @@
 import datetime
 import os
 import re
-import pandas as pd
-import matplotlib.pyplot as plt
 from pprint import pprint
-from typing import AnyStr, Text
+from typing import AnyStr
 
 import click
 import requests
@@ -23,6 +21,7 @@ from app import utils
 from app.api import api
 from app.db import db
 from app.frontend import frontend
+from app.social import social
 from app.models import Article, Keyword, Author
 from proxies.proxies import Proxies
 from scrapers.scraper_resolver import ScraperResolver
@@ -35,64 +34,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_CONN')
 
 app.register_blueprint(api)
 app.register_blueprint(frontend)
+app.register_blueprint(social)
 
 with app.app_context():
     db.init_app(app)
-
-
-@app.cli.command('plot-share-charts')
-@click.argument('month')  # In format 2021-03
-def plot_share_charts(month: Text) -> None:
-    sources = ScraperResolver().get_all()
-    for source in sources:
-        plot_shares(source, month)
-
-
-def plot_shares(source, month='2021-03'):
-    from_date = datetime.datetime.strptime(f'{month}-01', '%Y-%m-%d')
-    to_date = from_date + datetime.timedelta(weeks=4)
-
-    query = db.session.query(Article).filter(
-        Article.shares_count >= 0,
-        (Article.date > from_date),
-        (Article.date < to_date),
-        Article.source == source
-    )
-    if query.count == 0:
-        return
-    df = pd.read_sql(query.statement, db.session.bind)
-    plt.figure()
-
-    df['date'] = df['date'].apply(lambda x: x.day)
-    if df.empty:
-        return
-    df = df.groupby('date').agg({'shares_count': 'mean'})
-    df.reset_index(inplace=True)
-    plt.plot(df['date'], df['shares_count'], marker='o',
-             markerfacecolor='skyblue', markersize=12, color='skyblue',
-             linewidth=4)
-
-    plt.savefig(f'export/{month}_{source}.png')
-
-
-@app.cli.command('fetch-shares')
-def fetch_db_shares() -> None:
-    query = db.session.query(Article).filter(Article.shares_count == None)
-    for article in query.limit(100).all():
-        url = article.url
-        shares_count = get_fb_shares(url)
-        article.shares_count = shares_count
-        db.session.add(article)
-        db.session.commit()
-
-
-def get_fb_shares(url: Text) -> int:
-    api_key = os.environ.get('SHARED_COUNT_KEY')
-    sc_url = 'https://api.sharedcount.com/v1.0/'
-    params = {'url': url, 'apiKey': api_key}
-    content = requests.get(sc_url, params=params)
-    fb_data = content.json()['Facebook']
-    return fb_data['share_count']
 
 
 @app.cli.command('scrape-web')
